@@ -61,3 +61,46 @@ export interface Modal {
   content: React.ReactNode;
   onClose: () => void;
 }
+
+// Form field types
+export type FieldType = 
+  | 'text'
+  | 'textarea'
+  | 'email'
+  | 'phone'
+  | 'url'
+  | 'number'
+  | 'date'
+  | 'time'
+  | 'datetime'
+  | 'checkbox'
+  | 'select'
+  | 'multiselect'
+  | 'file'
+  | 'color'
+  | 'json'
+  | 'richtext';
+
+export interface ContentField {
+  id: string;
+  key: string;
+  label: string;
+  value: any;
+  type: FieldType;
+  required: boolean;
+  placeholder?: string;
+  options?: string[]; // For select/multiselect
+  validation?: {
+    min?: number;
+    max?: number;
+    pattern?: string;
+    minLength?: number;
+    maxLength?: number;
+  };
+}
+
+export interface FieldTemplate {
+  name: string;
+  description: string;
+  fields: Omit<ContentField, 'id' | 'value'>[];
+}

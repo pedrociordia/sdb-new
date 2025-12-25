@@ -16,7 +16,7 @@
 
 ---
 
-## 🎨 Diseño Ultra Moderno 2025
+## 🎨 Diseño Ultra Moderno 2025!
 
 Este proyecto implementa las últimas tendencias de diseño web:
 

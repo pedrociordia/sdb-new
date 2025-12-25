@@ -68,7 +68,7 @@ export const db = {
     return { data, error };
   },
 
-  createSection: async (section: any) => {
+  createSection: async (section: Record<string, unknown>) => {
     const { data, error } = await supabase
       .from('content_sections')
       .insert(section)
@@ -77,7 +77,7 @@ export const db = {
     return { data, error };
   },
 
-  updateSection: async (id: string, updates: any) => {
+  updateSection: async (id: string, updates: Record<string, unknown>) => {
     const { data, error } = await supabase
       .from('content_sections')
       .update(updates)

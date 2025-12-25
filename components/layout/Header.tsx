@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Bell, User, Settings, Sun, Moon } from 'lucide-react';
-import Button from '@/components/ui/Button';
 
 interface HeaderProps {
   title: string;

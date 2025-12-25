@@ -2,12 +2,13 @@
 
 import { HTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/utils/cn';
-import { motion } from 'framer-motion';
+import { motion, type MotionProps } from 'framer-motion';
 
-export interface CardProps extends HTMLAttributes<HTMLDivElement> {
+export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, keyof MotionProps> {
   variant?: 'glass' | 'neomorph' | 'solid';
   hover?: boolean;
   glow?: boolean;
+  children?: React.ReactNode;
 }
 
 const Card = forwardRef<HTMLDivElement, CardProps>(

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Plus, RefreshCw, Filter, Download, Upload } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
@@ -78,7 +78,7 @@ export default function DashboardPage() {
   };
 
   const handleDelete = (sectionId: string) => {
-    setSections(sections.filter(s => s.id !== sectionId));
+    setSections(prevSections => prevSections.filter(s => s.id !== sectionId));
     addToast('success', 'Sección eliminada correctamente');
   };
 

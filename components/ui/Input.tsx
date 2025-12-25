@@ -2,9 +2,9 @@
 
 import { InputHTMLAttributes, forwardRef, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { motion } from 'framer-motion';
+import { motion, type MotionProps } from 'framer-motion';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, keyof MotionProps> {
   label?: string;
   error?: string;
   leftIcon?: React.ReactNode;

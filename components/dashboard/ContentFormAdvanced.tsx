@@ -54,7 +54,7 @@ const ContentFormAdvanced: React.FC<ContentFormAdvancedProps> = ({
     }
   }, [section]);
 
-  const inferFieldType = (value: any): ContentField['type'] => {
+  const inferFieldType = (value: unknown): ContentField['type'] => {
     if (typeof value === 'boolean') return 'checkbox';
     if (typeof value === 'number') return 'number';
     if (Array.isArray(value)) return 'multiselect';
@@ -179,7 +179,7 @@ const ContentFormAdvanced: React.FC<ContentFormAdvancedProps> = ({
 
     try {
       // Convert fields to content object
-      const content: Record<string, any> = {};
+      const content: Record<string, unknown> = {};
       fields.forEach((field) => {
         if (field.key.trim()) {
           content[field.key.trim()] = field.value;

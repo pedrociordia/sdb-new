@@ -82,15 +82,13 @@ const ContentForm: React.FC<ContentFormProps> = ({
     }
 
     // Validate content fields
-    const hasEmptyKeys = contentFields.some((field, index) => {
+    contentFields.forEach((field, index) => {
       if (field.key.trim() && !field.value.trim()) {
         newErrors[`value-${index}`] = 'El valor es requerido';
-        return true;
       }
-      return false;
     });
 
-    const hasDuplicateKeys = contentFields.some((field, index) => {
+    contentFields.forEach((field, index) => {
       if (field.key.trim()) {
         const duplicates = contentFields.filter((f, i) => 
           i !== index && f.key.trim() === field.key.trim()
@@ -118,7 +116,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
 
     try {
       // Convert content fields array to object
-      const content: Record<string, any> = {};
+      const content: Record<string, unknown> = {};
       contentFields.forEach((field) => {
         if (field.key.trim() && field.value.trim()) {
           // Try to parse as JSON, otherwise use as string
@@ -231,7 +229,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
 
         <div className="text-xs text-gray-400 glass rounded-xl p-3">
           <strong>Tip:</strong> Puedes usar formato JSON en los valores. 
-          Ejemplo: <code className="text-ocean-400">{"["Opción 1", "Opción 2"]"}</code> para arrays
+          Ejemplo: <code className="text-ocean-400">{`["Opción 1", "Opción 2"]`}</code> para arrays
         </div>
       </div>
 

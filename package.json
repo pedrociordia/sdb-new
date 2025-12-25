@@ -2,11 +2,25 @@
   "name": "santo-domingo-bay-cms",
   "version": "1.0.0",
   "private": true,
+  "description": "CMS para gestionar el contenido del Santo Domingo Bay Resort & Casino",
+  "author": "Santo Domingo Bay Development Team",
+  "license": "MIT",
+  "keywords": [
+    "cms",
+    "nextjs",
+    "typescript",
+    "supabase",
+    "neomorphism",
+    "glassmorphism"
+  ],
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf .next node_modules",
+    "install:clean": "npm run clean && npm install"
   },
   "dependencies": {
     "next": "^15.1.6",
@@ -28,5 +42,9 @@
     "eslint": "^9.17.0",
     "eslint-config-next": "^15.1.6",
     "autoprefixer": "^10.4.20"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }

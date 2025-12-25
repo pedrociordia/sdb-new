@@ -8,10 +8,11 @@ import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
 import ContentCard from '@/components/dashboard/ContentCard';
 import EmptyState from '@/components/dashboard/EmptyState';
+import ContentForm from '@/components/dashboard/ContentForm';
 import Modal from '@/components/ui/Modal';
 import Button from '@/components/ui/Button';
 import { ToastContainer } from '@/components/ui/Toast';
-import { mockCategories, mockContentSections } from '@/lib/mock-data';
+import { db } from '@/lib/supabase';
 import { Category, ContentSection } from '@/types';
 
 export default function DashboardPage() {
@@ -21,10 +22,20 @@ export default function DashboardPage() {
   const [sections, setSections] = useState<ContentSection[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
   const [viewModal, setViewModal] = useState<{ isOpen: boolean; section: ContentSection | null }>({
     isOpen: false,
     section: null,
   });
+  
+  const [formModal, setFormModal] = useState<{ 
+    isOpen: boolean; 
+    section: ContentSection | null;
+  }>({
+    isOpen: false,
+    section: null,
+  });
+
   const [toasts, setToasts] = useState<Array<{
     id: string;
     type: 'success' | 'error' | 'warning' | 'info';
@@ -43,23 +54,45 @@ export default function DashboardPage() {
 
   const loadCategories = async () => {
     setIsLoading(true);
-    // Simulación de carga desde Supabase
-    setTimeout(() => {
-      setCategories(mockCategories);
-      if (mockCategories.length > 0) {
-        setSelectedCategoryId(mockCategories[0].id);
+    try {
+      const { data, error } = await db.getCategories();
+      
+      if (error) {
+        console.error('Error loading categories:', error);
+        addToast('error', 'Error al cargar categorías');
+        return;
       }
+
+      if (data && data.length > 0) {
+        setCategories(data);
+        setSelectedCategoryId(data[0].id);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      addToast('error', 'Error de conexión');
+    } finally {
       setIsLoading(false);
-    }, 500);
+    }
   };
 
   const loadSections = async (categoryId: string) => {
     setIsLoading(true);
-    // Simulación de carga desde Supabase
-    setTimeout(() => {
-      setSections(mockContentSections[categoryId] || []);
+    try {
+      const { data, error } = await db.getSections(categoryId);
+      
+      if (error) {
+        console.error('Error loading sections:', error);
+        addToast('error', 'Error al cargar secciones');
+        return;
+      }
+
+      setSections(data || []);
+    } catch (error) {
+      console.error('Error:', error);
+      addToast('error', 'Error de conexión');
+    } finally {
       setIsLoading(false);
-    }, 300);
+    }
   };
 
   const handleRefresh = () => {
@@ -74,16 +107,95 @@ export default function DashboardPage() {
   };
 
   const handleEdit = (section: ContentSection) => {
-    addToast('info', 'Función de edición en desarrollo');
+    setFormModal({ isOpen: true, section });
   };
 
-  const handleDelete = (sectionId: string) => {
-    setSections(prevSections => prevSections.filter(s => s.id !== sectionId));
-    addToast('success', 'Sección eliminada correctamente');
+  const handleDelete = async (sectionId: string) => {
+    if (!confirm('¿Estás seguro de que deseas eliminar esta sección?')) {
+      return;
+    }
+
+    try {
+      const { error } = await db.deleteSection(sectionId);
+      
+      if (error) {
+        console.error('Error deleting section:', error);
+        addToast('error', 'Error al eliminar la sección');
+        return;
+      }
+
+      setSections(prevSections => prevSections.filter(s => s.id !== sectionId));
+      addToast('success', 'Sección eliminada correctamente');
+    } catch (error) {
+      console.error('Error:', error);
+      addToast('error', 'Error de conexión');
+    }
   };
 
   const handleAddNew = () => {
-    addToast('info', 'Función de agregar en desarrollo');
+    setFormModal({ isOpen: true, section: null });
+  };
+
+  const handleSaveSection = async (data: Partial<ContentSection>) => {
+    try {
+      if (formModal.section) {
+        // Update existing section
+        const { data: updated, error } = await db.updateSection(
+          formModal.section.id,
+          {
+            title: data.title,
+            slug: data.slug,
+            content: data.content,
+            updated_at: new Date().toISOString(),
+          }
+        );
+
+        if (error) {
+          console.error('Error updating section:', error);
+          addToast('error', 'Error al actualizar la sección');
+          return;
+        }
+
+        // Update local state
+        if (updated) {
+          setSections(prevSections =>
+            prevSections.map(s => s.id === updated.id ? updated : s)
+          );
+          addToast('success', 'Sección actualizada correctamente');
+        }
+      } else {
+        // Create new section
+        const maxOrderIndex = sections.length > 0
+          ? Math.max(...sections.map(s => s.order_index))
+          : -1;
+
+        const { data: created, error } = await db.createSection({
+          category_id: selectedCategoryId,
+          title: data.title,
+          slug: data.slug,
+          content: data.content || {},
+          order_index: maxOrderIndex + 1,
+        });
+
+        if (error) {
+          console.error('Error creating section:', error);
+          addToast('error', 'Error al crear la sección');
+          return;
+        }
+
+        // Add to local state
+        if (created) {
+          setSections(prevSections => [...prevSections, created]);
+          addToast('success', 'Sección creada correctamente');
+        }
+      }
+
+      // Close modal
+      setFormModal({ isOpen: false, section: null });
+    } catch (error) {
+      console.error('Error:', error);
+      addToast('error', 'Error de conexión');
+    }
   };
 
   const handleLogout = () => {
@@ -237,6 +349,23 @@ export default function DashboardPage() {
               </pre>
             </div>
           </div>
+        )}
+      </Modal>
+
+      {/* Add/Edit Form Modal */}
+      <Modal
+        isOpen={formModal.isOpen}
+        onClose={() => setFormModal({ isOpen: false, section: null })}
+        title={formModal.section ? 'Editar Sección' : 'Nueva Sección'}
+        size="xl"
+      >
+        {selectedCategoryId && (
+          <ContentForm
+            section={formModal.section}
+            categoryId={selectedCategoryId}
+            onSave={handleSaveSection}
+            onCancel={() => setFormModal({ isOpen: false, section: null })}
+          />
         )}
       </Modal>
 

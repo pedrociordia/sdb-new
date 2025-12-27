@@ -70,6 +70,49 @@ const contentData = {
         type: 'brand'
       },
       order_index: 5
+    },
+    {
+      title: 'Main Features',
+      slug: 'main-features',
+      content: {
+        title: 'Main Features',
+        icon: '🌟',
+        type: 'features',
+        features: [
+          'Private Beach',
+          'Located within 10 minutes from Las Americas Airport and 35 minutes from Santo Domingo\'s old city',
+          'We offer the biggest meeting rooms close to Santo Domingo',
+          'More than 85% of the rooms are facing the ocean',
+          'Great location for weddings',
+          'El mar Club Restaurant comes back alive',
+          'Part of the Dominican Republic history',
+          'Parking',
+          'Spa'
+        ]
+      },
+      order_index: 6
+    },
+    {
+      title: 'Services',
+      slug: 'hotel-services',
+      content: {
+        title: 'Services',
+        icon: '🛎️',
+        type: 'services',
+        services: [
+          { name: 'Room Service', hours: '07:00 - 11:00pm', cost: 'included' },
+          { name: 'Concierge', hours: '07:00 - 11:00pm', cost: 'included' },
+          { name: 'Laundry', description: 'Same-day service available', cost: 'paid' },
+          { name: 'Airport Shuttle', description: 'variable', cost: 'paid' },
+          { name: 'Parking', description: 'undefined yet', cost: 'paid' },
+          { name: 'Free Wifi', cost: 'free' },
+          { name: 'Taxi', cost: 'paid' },
+          { name: 'Casino', cost: 'paid' },
+          { name: 'Shopping Centers', cost: 'paid' },
+          { name: 'Medical Center', cost: 'paid' }
+        ]
+      },
+      order_index: 7
     }
   ],
   'restaurants-bars': [

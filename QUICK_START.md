@@ -48,13 +48,15 @@ npm run seed:sql
 
 ## 📊 ¿Qué se va a cargar?
 
-### Total: 25+ secciones de contenido
+### Total: 27+ secciones de contenido
 
-#### 🏨 Información General (5)
+#### 🏨 Información General (7)
 - Contacto del hotel
 - Personalidad de marca
 - Pilares de marca (ES/EN)
 - Esencia de marca
+- Main Features (9 características)
+- Services (10 servicios con horarios)
 
 #### 🍽️ Restaurantes & Bares (6)
 - La Famiglia (Italian)

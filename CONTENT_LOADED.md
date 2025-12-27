@@ -10,7 +10,7 @@
 
 ## 📁 Contenido por Categoría
 
-### 🏨 1. Información General (5 secciones)
+### 🏨 1. Información General (7 secciones)
 
 | Título | Slug | Contenido |
 |--------|------|-----------|
@@ -19,6 +19,8 @@
 | Pilares de Marca (ES) | `brand-pillars-spanish` | Celebración, Renovación, Inspiración |
 | Brand Pillars (EN) | `brand-pillars-english` | Celebration, Renewal, Inspiration |
 | Esencia de Marca | `brand-essence` | 20 conceptos de "cercanía" |
+| Main Features | `main-features` | 9 características principales del hotel |
+| Services | `hotel-services` | 10 servicios con horarios y costos |
 
 **Datos incluidos**:
 - ✅ Hotel name, category, stars
@@ -29,6 +31,8 @@
 - ✅ Brand personality storytelling
 - ✅ Brand pillars (Spanish & English)
 - ✅ Brand essence phrases
+- ✅ Main Features (Private beach, location, meeting rooms, ocean views, etc.)
+- ✅ Services (Room service, concierge, laundry, wifi, etc.) con horarios y costos
 
 ---
 
